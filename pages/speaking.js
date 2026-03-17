@@ -67,7 +67,7 @@ export default function Speaking() {
       const lines = [];
       dialogues.forEach(d => {
         if (lv === 'Tất cả' || d.level === lv)
-          d.lines.forEach(l => lines.push({ hanzi: l.text, meaning: l.translation, level: d.level }));
+          d.lines.forEach(l => lines.push({ hanzi: l.text, pinyin: l.pinyin, meaning: l.translation, level: d.level }));
       });
       setPool(shuffle(lines));
     }
