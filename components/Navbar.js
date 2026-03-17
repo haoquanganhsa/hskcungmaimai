@@ -7,6 +7,7 @@ const navItems = [
   { href: '/vocabulary', label: 'Từ vựng', icon: '📚' },
   { href: '/quiz', label: 'Quiz', icon: '✏️' },
   { href: '/listening', label: 'Nghe', icon: '🎧' },
+  { href: '/speaking', label: 'Nói', icon: '🎤' },
   { href: '/writing', label: 'Viết', icon: '🖊️' },
   { href: '/progress', label: 'Tiến độ', icon: '📊' },
 ];
@@ -23,7 +24,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-14 md:h-16">
             <Link href="/" className="flex items-center gap-2 font-bold text-blue-700">
               <span className="text-2xl hanzi">汉</span>
-              <span className="text-base md:text-lg">HSK Học Tiếng Trung cùng Mai Mai</span>
+              <span className="text-base md:text-lg">HSK Tiếng Trung</span>
             </Link>
 
             {/* Desktop nav */}
@@ -77,15 +78,13 @@ export default function Navbar() {
 
       {/* Mobile bottom navigation bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 safe-area-bottom">
-        <div className="grid grid-cols-6 h-16">
+        <div className="grid grid-cols-7 h-14">
           {navItems.map(item => (
             <Link key={item.href} href={item.href}
               className={`flex flex-col items-center justify-center gap-0.5 transition-colors
-                ${router.pathname === item.href
-                  ? 'text-blue-600'
-                  : 'text-gray-400'}`}>
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-[10px] font-medium leading-none">
+                ${router.pathname === item.href ? 'text-blue-600' : 'text-gray-400'}`}>
+              <span className="text-lg leading-none">{item.icon}</span>
+              <span className="text-[9px] font-medium leading-none truncate w-full text-center px-0.5">
                 {item.label === 'Trang chủ' ? 'Home' : item.label}
               </span>
             </Link>

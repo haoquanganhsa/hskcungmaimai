@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const features = [
-  { icon: '📚', title: 'Thư viện từ vựng', desc: '60+ từ HSK1 & HSK2 với Flashcard tương tác, phát âm và ví dụ câu', href: '/vocabulary', color: 'from-blue-500 to-blue-600' },
+  { icon: '📚', title: 'Thư viện từ vựng', desc: '120+ từ HSK1 & HSK2 với Flashcard tương tác, phát âm và ví dụ câu', href: '/vocabulary', color: 'from-blue-500 to-blue-600' },
   { icon: '✏️', title: 'Bài quiz trắc nghiệm', desc: 'Kiểm tra kiến thức ngay lập tức với quiz nhiều lựa chọn, tính điểm', href: '/quiz', color: 'from-purple-500 to-purple-600' },
   { icon: '🎧', title: 'Luyện nghe', desc: 'Hội thoại thực tế cấp HSK1-HSK2, có phụ đề tiếng Việt', href: '/listening', color: 'from-pink-500 to-pink-600' },
+  { icon: '🎤', title: 'Luyện nói', desc: 'Nghe mẫu → nói lại → so sánh % độ chính xác với AI nhận diện giọng nói', href: '/speaking', color: 'from-red-500 to-rose-600' },
   { icon: '🖊️', title: 'Luyện viết', desc: 'Gõ chữ Hán và kiểm tra đúng/sai theo từ vựng đã học', href: '/writing', color: 'from-orange-500 to-orange-600' },
   { icon: '📊', title: 'Theo dõi tiến độ', desc: 'Dashboard cá nhân: số từ đã học, điểm quiz, streak học mỗi ngày', href: '/progress', color: 'from-green-500 to-green-600' },
 ];
@@ -25,17 +26,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
+    <div className="max-w-6xl mx-auto px-4 py-6 md:py-10 pb-28 md:pb-10">
       {/* Hero */}
       <div className="text-center mb-14 fade-in">
         <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-sm font-semibold px-4 py-2 rounded-full mb-6 border border-blue-200">
-          🇨🇳 Học tiếng Trung từ cơ bản đến HSK cùng Mai Mai
+          🇨🇳 Học tiếng Trung từ cơ bản đến thi HSK
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
           Học tiếng Trung{' '}
           <span className="text-blue-600">thật dễ</span> với
           <br />
-          <span className="hanzi text-4xl md:text-6xl text-blue-700">Mai Mai - 汉语学习</span>
+          <span className="hanzi text-4xl md:text-6xl text-blue-700">汉语学习</span>
         </h1>
         <p className="text-lg text-gray-500 max-w-xl mx-auto mb-8">
           Lộ trình từ vựng HSK1–HSK2 dành cho người Việt mới bắt đầu. Học qua Flashcard, Quiz, Nghe và Viết.
