@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "title": "Gặp gỡ lần đầu",
+    "titleZh": "第一次见面",
+    "level": "HSK1",
+    "lines": [
+      {"speaker": "小明", "text": "你好！我叫范梅。你叫什么名字？", "translation": "Xin chào! Mình tên Phạm Mai. Bạn tên gì?"},
+      {"speaker": "小红", "text": "你好！我叫小红。很高兴认识你！", "translation": "Xin chào! Mình tên Tiểu Hồng. Rất vui được gặp bạn!"},
+      {"speaker": "小明", "text": "你是哪国人？", "translation": "Bạn là người nước nào?"},
+      {"speaker": "小红", "text": "我是越南人。你呢？", "translation": "Mình là người Việt Nam. Còn bạn?"},
+      {"speaker": "小明", "text": "我是中国人。你的中文说得很好！", "translation": "Mình là người Trung Quốc. Tiếng Trung của bạn nói rất tốt!"},
+      {"speaker": "小红", "text": "谢谢！我还在学习。", "translation": "Cảm ơn! Mình vẫn đang học."}
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Tại quán ăn",
+    "titleZh": "在餐厅",
+    "level": "HSK1",
+    "lines": [
+      {"speaker": "服务员", "text": "你好！请问你要点什么？", "translation": "Xin chào! Bạn muốn gọi gì ạ?"},
+      {"speaker": "顾客", "text": "我要一碗米饭和一杯茶。", "translation": "Cho tôi một bát cơm và một tách trà."},
+      {"speaker": "服务员", "text": "好的。还要别的吗？", "translation": "Vâng. Bạn cần thêm gì không?"},
+      {"speaker": "顾客", "text": "不用了，谢谢。多少钱？", "translation": "Không cần nữa, cảm ơn. Bao nhiêu tiền?"},
+      {"speaker": "服务员", "text": "一共三十块钱。", "translation": "Tổng cộng ba mươi tệ."},
+      {"speaker": "顾客", "text": "好的，给你。", "translation": "Vâng, đây tiền."}
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Mua đồ ở cửa hàng",
+    "titleZh": "在商店买东西",
+    "level": "HSK1",
+    "lines": [
+      {"speaker": "顾客", "text": "你好，这个苹果多少钱？", "translation": "Xin chào, táo này bao nhiêu tiền?"},
+      {"speaker": "店员", "text": "一斤五块钱。", "translation": "Một cân năm tệ."},
+      {"speaker": "顾客", "text": "我要两斤。", "translation": "Tôi lấy hai cân."},
+      {"speaker": "店员", "text": "好的，一共十块钱。", "translation": "Vâng, tổng cộng mười tệ."},
+      {"speaker": "顾客", "text": "给你十块。谢谢！", "translation": "Đây mười tệ. Cảm ơn!"},
+      {"speaker": "店员", "text": "不客气！欢迎下次再来！", "translation": "Không có gì! Hẹn gặp lại!"}
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Hỏi đường",
+    "titleZh": "问路",
+    "level": "HSK1",
+    "lines": [
+      {"speaker": "游客", "text": "请问，图书馆在哪里？", "translation": "Xin hỏi, thư viện ở đâu ạ?"},
+      {"speaker": "路人", "text": "图书馆在学校的左边。你往左走就到了。", "translation": "Thư viện ở bên trái trường học. Bạn rẽ trái là đến."},
+      {"speaker": "游客", "text": "走路要多长时间？", "translation": "Đi bộ mất bao lâu?"},
+      {"speaker": "路人", "text": "大概十分钟。不太远。", "translation": "Khoảng mười phút thôi. Không xa lắm."},
+      {"speaker": "游客", "text": "太感谢了！再见！", "translation": "Cảm ơn nhiều lắm! Tạm biệt!"},
+      {"speaker": "路人", "text": "再见！慢走！", "translation": "Tạm biệt! Đi cẩn thận nhé!"}
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Lên kế hoạch cuối tuần",
+    "titleZh": "周末计划",
+    "level": "HSK2",
+    "lines": [
+      {"speaker": "大卫", "text": "这个周末你有什么计划？", "translation": "Cuối tuần này bạn có kế hoạch gì không?"},
+      {"speaker": "李娜", "text": "我想去公园走走，因为天气很好。", "translation": "Mình muốn đi dạo công viên vì thời tiết rất đẹp."},
+      {"speaker": "大卫", "text": "听起来不错！我可以一起去吗？", "translation": "Nghe hay đấy! Mình có thể đi cùng không?"},
+      {"speaker": "李娜", "text": "当然可以！我们星期六上午十点见面，怎么样？", "translation": "Dĩ nhiên rồi! Chúng ta gặp nhau thứ Bảy lúc 10 giờ sáng nhé?"},
+      {"speaker": "大卫", "text": "好的，没问题！到时候见！", "translation": "Được, không vấn đề! Hẹn gặp nhau lúc đó!"},
+      {"speaker": "李娜", "text": "好！别忘了带水。", "translation": "Tốt! Đừng quên mang nước nhé."}
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Đặt lịch khám bệnh",
+    "titleZh": "预约看病",
+    "level": "HSK2",
+    "lines": [
+      {"speaker": "患者", "text": "你好，我想预约看医生。", "translation": "Xin chào, tôi muốn đặt lịch khám bác sĩ."},
+      {"speaker": "护士", "text": "好的，你哪里不舒服？", "translation": "Vâng, bạn bị khó chịu ở đâu?"},
+      {"speaker": "患者", "text": "我头疼，而且发烧了。", "translation": "Tôi bị đau đầu và sốt."},
+      {"speaker": "护士", "text": "好的。明天上午九点可以吗？", "translation": "Được rồi. Ngày mai sáng lúc 9 giờ có được không?"},
+      {"speaker": "患者", "text": "可以，谢谢！需要带什么吗？", "translation": "Được, cảm ơn! Cần mang theo gì không?"},
+      {"speaker": "护士", "text": "请带身份证和医保卡来。", "translation": "Vui lòng mang theo chứng minh thư và thẻ bảo hiểm y tế."}
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Nói chuyện về học tiếng Trung",
+    "titleZh": "谈学中文",
+    "level": "HSK2",
+    "lines": [
+      {"speaker": "安娜", "text": "你学中文学了多长时间了？", "translation": "Bạn học tiếng Trung được bao lâu rồi?"},
+      {"speaker": "明浩", "text": "我学了一年了。但是我觉得汉字很难写。", "translation": "Mình học được một năm rồi. Nhưng mình thấy chữ Hán rất khó viết."},
+      {"speaker": "安娜", "text": "我也觉得很难！你怎么练习的？", "translation": "Mình cũng thấy rất khó! Bạn luyện tập như thế nào?"},
+      {"speaker": "明浩", "text": "我每天听中文歌，也看中文视频。", "translation": "Mình nghe nhạc tiếng Trung mỗi ngày, và cũng xem video tiếng Trung."},
+      {"speaker": "安娜", "text": "好办法！我应该多听多说。", "translation": "Cách hay đấy! Mình nên nghe nhiều hơn và nói nhiều hơn."},
+      {"speaker": "明浩", "text": "对！坚持下去，你一定会进步的！", "translation": "Đúng vậy! Hãy kiên trì, bạn nhất định sẽ tiến bộ!"}
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Đi mua sắm quần áo",
+    "titleZh": "买衣服",
+    "level": "HSK2",
+    "lines": [
+      {"speaker": "顾客", "text": "你好，这件衣服有没有小号的？", "translation": "Xin chào, bộ quần áo này có cỡ nhỏ không?"},
+      {"speaker": "店员", "text": "有的，请稍等，我去找一下。", "translation": "Có ạ, xin chờ một chút, tôi đi lấy."},
+      {"speaker": "顾客", "text": "谢谢。这件衣服多少钱？", "translation": "Cảm ơn. Bộ quần áo này bao nhiêu tiền?"},
+      {"speaker": "店员", "text": "这件一百二十块。现在打八折，只要九十六块。", "translation": "Bộ này một trăm hai mươi tệ. Hiện giảm giá 20%, chỉ còn chín mươi sáu tệ."},
+      {"speaker": "顾客", "text": "好的，我可以试穿吗？", "translation": "Được rồi, tôi có thể thử không?"},
+      {"speaker": "店员", "text": "当然可以！试衣间在那边。", "translation": "Dĩ nhiên được! Phòng thử đồ ở đằng kia."}
+    ]
+  }
+]
