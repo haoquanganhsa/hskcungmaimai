@@ -13,6 +13,7 @@ hsk-app/
 │   ├── quiz.js          # Bài tập trắc nghiệm
 │   ├── listening.js     # Luyện nghe hội thoại
 │   ├── writing.js       # Luyện viết chữ Hán
+│   └── speaking.js      # Luyện nói
 │   └── progress.js      # Dashboard tiến độ
 ├── components/
 │   ├── Navbar.js        # Navigation bar
