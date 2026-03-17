@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }) {
         <meta name="theme-color" content="#2563eb" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <title>HSK Học Tiếng Trung</title>
+        <title>HSK Học Tiếng Trung cùng Mai Mai</title>
       </Head>
       <div className="min-h-screen bg-gray-50">
         <Navbar />

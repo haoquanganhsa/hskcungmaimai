@@ -23,7 +23,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-14 md:h-16">
             <Link href="/" className="flex items-center gap-2 font-bold text-blue-700">
               <span className="text-2xl hanzi">汉</span>
-              <span className="text-base md:text-lg">HSK Học Tiếng Trung cùng Mai Mai</span>
+              <span className="text-base md:text-lg">HSK Học Tiếng Trung cùng Mai Mai - Phạm Mai</span>
             </Link>
 
             {/* Desktop nav */}
