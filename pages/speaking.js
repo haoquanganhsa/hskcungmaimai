@@ -277,6 +277,9 @@ export default function Speaking() {
             {mode === 'word' && item.pinyin && (
               <div className="text-blue-400 text-base font-medium mb-1">{item.pinyin}</div>
             )}
+            {mode === 'sentence' && item.pinyin && (
+              <div className="text-blue-400 text-sm font-medium mb-1 leading-relaxed">{item.pinyin}</div>
+            )}
             <div className="text-gray-500 text-sm">{item.meaning || item.exampleVi}</div>
           </div>
 
@@ -368,7 +371,7 @@ export default function Speaking() {
             <li>Bấm <strong>"Bấm và nói"</strong> rồi đọc to tiếng Trung</li>
             <li>Xem kết quả và nghe lại giọng của bạn để so sánh</li>
           </ol>
-          <p className="mt-2 text-xs text-amber-600">⚠️ Chỉ hỗ trợ Chrome / Edge trên Android và máy tính không hỗ trợ ios</p>
+          <p className="mt-2 text-xs text-amber-600">⚠️ Chỉ hỗ trợ Chrome / Edge trên Android và máy tính</p>
         </div>
       )}
 

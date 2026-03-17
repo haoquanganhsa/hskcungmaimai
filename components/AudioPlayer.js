@@ -149,6 +149,9 @@ export default function AudioPlayer({ dialogue, onSpeak }) {
                   )}
                 </div>
                 <p className="hanzi text-gray-800 text-base leading-relaxed">{line.text}</p>
+                {line.pinyin && (
+                  <p className="text-blue-400 text-xs font-medium mt-0.5">{line.pinyin}</p>
+                )}
                 {showSub && (
                   <p className="text-sm text-gray-500 mt-1 italic">{line.translation}</p>
                 )}
