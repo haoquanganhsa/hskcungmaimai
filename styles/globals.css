@@ -44,13 +44,6 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Add padding so content isn't hidden behind bottom nav on mobile */
-@media (max-width: 767px) {
-  main > div {
-    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 16px));
-  }
-}
-
 /* Prevent tap highlight on mobile */
 button, a {
   -webkit-tap-highlight-color: transparent;

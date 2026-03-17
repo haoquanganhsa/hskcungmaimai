@@ -14,13 +14,14 @@ export default function App({ Component, pageProps }) {
       </Head>
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <main>
+        {/* pb-24 trên mobile = đẩy nội dung lên trên bottom nav bar */}
+        <main className="pb-24 md:pb-0">
           <Component {...pageProps} />
         </main>
         {/* Footer - hidden on mobile (bottom nav takes its place) */}
         <footer className="hidden md:block bg-white border-t border-gray-100 py-8 mt-16">
           <div className="max-w-6xl mx-auto px-4 text-center text-sm text-gray-400">
-            <p className="hanzi text-lg font-medium text-gray-600 mb-1">学中文，每天进步一点点 🌟- Phạm Mai</p>
+            <p className="hanzi text-lg font-medium text-gray-600 mb-1">学中文，每天进步一点点 🌟 - Phạm Mai</p>
             <p>Học tiếng Trung, mỗi ngày tiến bộ một chút - Nếu tiến bộ thì cho Chồng xin 500k - STK 0982481134 BIDV</p>
             <p className="mt-2 text-xs">HSK 1 · HSK 2 · Dành cho người mới bắt đầu cũng như Mai Mai</p>
           </div>
