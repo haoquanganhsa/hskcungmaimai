@@ -9,6 +9,15 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Cỡ chữ base lớn hơn trên mobile */
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  html { font-size: 17px; }
+  /* Chữ nhỏ trên mobile tăng lên 1 bậc */
+  .text-xs  { font-size: 0.8rem  !important; }
+  .text-sm  { font-size: 0.9rem  !important; }
 }
 
 body {
@@ -45,11 +54,7 @@ body {
 }
 
 /* Prevent tap highlight on mobile */
-button, a {
-  -webkit-tap-highlight-color: transparent;
-}
+button, a { -webkit-tap-highlight-color: transparent; }
 
 /* Better touch scrolling */
-.overflow-x-auto {
-  -webkit-overflow-scrolling: touch;
-}
+.overflow-x-auto { -webkit-overflow-scrolling: touch; }

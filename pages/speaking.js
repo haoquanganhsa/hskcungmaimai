@@ -225,7 +225,7 @@ export default function Speaking() {
   );
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-6">
+    <div className="max-w-lg mx-auto px-4 py-3">
 
       {/* Hidden audio để phát lại giọng người dùng */}
       {userAudioUrl && (
@@ -235,13 +235,13 @@ export default function Speaking() {
       )}
 
       {/* Header */}
-      <div className="mb-5">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">🎤 Luyện nói</h1>
+      <div className="mb-3">
+        <h1 className="text-lg font-bold text-gray-800 mb-1">🎤 Luyện nói</h1>
         <p className="text-gray-500 text-sm">Nghe mẫu → Nói lại → Xem % độ chính xác</p>
       </div>
 
       {/* Score */}
-      <div className="grid grid-cols-3 gap-3 mb-5">
+      <div className="grid grid-cols-3 gap-3 mb-3">
         {[
           { label: '✅ Đúng',      val: score.good,     color: 'text-green-600' },
           { label: '❌ Sai',       val: score.bad,      color: 'text-red-500'   },
@@ -255,11 +255,11 @@ export default function Speaking() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-5 space-y-3">
+      <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-3 space-y-2">
         <div className="flex gap-2">
           {[{ k:'word', label:'📝 Từ vựng' }, { k:'sentence', label:'💬 Hội thoại' }].map(m => (
             <button key={m.k} onClick={() => setMode(m.k)}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition-all
+              className={`flex-1 py-2 rounded-xl text-sm font-medium border-2 transition-all
                 ${mode === m.k ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600'}`}>
               {m.label}
             </button>
@@ -281,7 +281,7 @@ export default function Speaking() {
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-4">
 
           {/* Từ / câu */}
-          <div className="text-center mb-5">
+          <div className="text-center mb-3">
             <div className="flex justify-center gap-2 mb-3">
               <span className={`text-xs font-bold px-3 py-1 rounded-full
                 ${(item.level || 'HSK1') === 'HSK1' ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700'}`}>

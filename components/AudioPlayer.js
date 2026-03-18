@@ -90,10 +90,10 @@ export default function AudioPlayer({ dialogue, onSpeak }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-5 text-white">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-lg">{dialogue.title}</h3>
+            <h3 className="font-bold text-base">{dialogue.title}</h3>
             <p className="hanzi text-blue-200 text-sm mt-0.5">{dialogue.titleZh}</p>
           </div>
           <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
@@ -121,10 +121,10 @@ export default function AudioPlayer({ dialogue, onSpeak }) {
       </div>
 
       {/* Dialogue lines */}
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-2">
         {dialogue.lines.map((line, i) => (
           <div key={i}
-            className={`p-4 rounded-xl transition-all duration-300 border
+            className={`p-3 rounded-xl transition-all duration-300 border
               ${currentLine === i
                 ? 'bg-blue-50 border-blue-300 shadow-sm scale-[1.01]'
                 : 'bg-gray-50 border-transparent'}`}>
