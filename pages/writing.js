@@ -28,9 +28,18 @@ export default function Writing() {
   const check = () => {
     if (!input.trim()) return;
     const correct = input.trim() === word.hanzi;
-    setResult(correct ? 'correct' : 'wrong');
     setScore(s => ({ ...s, [correct ? 'correct' : 'wrong']: s[correct ? 'correct' : 'wrong'] + 1 }));
     setHistory(h => [{ word, input: input.trim(), correct }, ...h]);
+    if (correct) {
+      // Đúng → chuyển từ tiếp theo ngay sau 400ms (để người dùng thấy flash xanh)
+      setResult('correct');
+      setTimeout(() => {
+        setCurrent(c => (c + 1) % pool.length);
+        setInput(''); setResult(null);
+      }, 400);
+    } else {
+      setResult('wrong');
+    }
   };
 
   const next = () => {
@@ -138,12 +147,12 @@ export default function Writing() {
               className="w-full md:w-auto h-14 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors text-base">
               Kiểm tra ✓
             </button>
-          ) : (
+          ) : result === 'wrong' ? (
             <button onClick={next}
               className="w-full md:w-auto h-14 px-6 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 active:bg-green-800 transition-colors text-base">
               Tiếp theo →
             </button>
-          )}
+          ) : null}
         </div>
 
         {/* Result */}

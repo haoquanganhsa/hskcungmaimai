@@ -113,34 +113,50 @@ export default function Speaking() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      // MediaRecorder — ghi lại để phát lại
-      const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      // MediaRecorder — chọn mimeType phù hợp với thiết bị
+      const mimeType = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg', 'audio/mp4', '']
+        .find(t => t === '' || MediaRecorder.isTypeSupported(t));
+      const recorderOptions = mimeType ? { mimeType } : {};
+      const recorder = new MediaRecorder(stream, recorderOptions);
       mediaRecRef.current = recorder;
+
       recorder.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data); };
       recorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        const blob = new Blob(chunksRef.current, { type: mimeType || 'audio/webm' });
         setUserAudioUrl(URL.createObjectURL(blob));
         stream.getTracks().forEach(t => t.stop());
       };
       recorder.start();
 
-      // SpeechRecognition — nhận diện văn bản
+      // SpeechRecognition — dùng continuous=true để không bị ngắt giữa câu dài
       const SR  = window.SpeechRecognition || window.webkitSpeechRecognition;
       const rec = new SR();
       rec.lang = 'zh-CN';
-      rec.continuous = false;
+      rec.continuous = mode === 'sentence'; // câu dài cần continuous
       rec.interimResults = false;
-      rec.maxAlternatives = 3;
+      rec.maxAlternatives = 5; // tăng lên 5 để có nhiều lựa chọn hơn
 
       rec.onstart = () => setListening(true);
 
       rec.onresult = (e) => {
-        let best = '', bestPct = 0;
-        for (let i = 0; i < e.results[0].length; i++) {
-          const heard = e.results[0][i].transcript;
-          const pct = similarity(item.hanzi, heard);
-          if (pct > bestPct) { bestPct = pct; best = heard; }
+        // Gom tất cả kết quả (với continuous=true có thể có nhiều results)
+        let allTranscripts = [];
+        for (let r = 0; r < e.results.length; r++) {
+          for (let i = 0; i < e.results[r].length; i++) {
+            allTranscripts.push(e.results[r][i].transcript);
+          }
         }
+        // Nối lại nếu continuous, hoặc chọn best nếu không
+        const combined = allTranscripts.join('');
+        let best = combined;
+        let bestPct = similarity(item.hanzi, combined);
+
+        // So sánh từng transcript riêng để lấy kết quả tốt nhất
+        allTranscripts.forEach(t => {
+          const pct = similarity(item.hanzi, t);
+          if (pct > bestPct) { bestPct = pct; best = t; }
+        });
+
         if (mediaRecRef.current?.state === 'recording') mediaRecRef.current.stop();
         setResult({ heard: best, pct: bestPct });
         setListening(false);
@@ -154,9 +170,14 @@ export default function Speaking() {
         if (mediaRecRef.current?.state === 'recording') mediaRecRef.current.stop();
         if (e.error === 'no-speech') setResult({ heard: '(không nghe thấy)', pct: 0 });
         else if (e.error === 'not-allowed') alert('Vui lòng cho phép microphone trong cài đặt trình duyệt!');
+        else if (e.error === 'network') setResult({ heard: '(lỗi mạng, thử lại)', pct: 0 });
       };
 
-      rec.onend = () => setListening(false);
+      rec.onend = () => {
+        setListening(false);
+        if (mediaRecRef.current?.state === 'recording') mediaRecRef.current.stop();
+      };
+
       recognizerRef.current = rec;
       rec.start();
 
@@ -299,7 +320,7 @@ export default function Speaking() {
                   ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-200'
                   : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 active:scale-95'}`}>
               {listening
-                ? <><span className="text-2xl">⏹</span> Đang nghe... bấm để dừng</>
+                ? <><span className="text-2xl">⏹</span> {mode === 'sentence' ? 'Bấm dừng khi nói xong' : 'Đang nghe... bấm để dừng'}</>
                 : <><span className="text-2xl">🎤</span> Bấm và nói tiếng Trung</>}
             </button>
           )}

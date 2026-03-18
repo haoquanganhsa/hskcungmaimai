@@ -10,20 +10,19 @@ export default function App({ Component, pageProps }) {
         <meta name="theme-color" content="#2563eb" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <title>HSK Học Tiếng Trung cùng Mai Mai</title>
+        <title>HSK Học Tiếng Trung</title>
       </Head>
-      <div className="min-h-screen bg-gray-50">
+      <div className="flex flex-col bg-gray-50" style={{ height: '100dvh' }}>
         <Navbar />
-        {/* pb-24 trên mobile = đẩy nội dung lên trên bottom nav bar */}
-        <main className="pb-24 md:pb-0">
+        {/* Desktop: nội dung scroll trong khung cố định, không cuộn cả trang */}
+        {/* Mobile: pb-24 tránh bị che bởi bottom nav */}
+        <main className="flex-1 overflow-y-auto pb-24 md:pb-0">
           <Component {...pageProps} />
         </main>
-        {/* Footer - hidden on mobile (bottom nav takes its place) */}
-        <footer className="hidden md:block bg-white border-t border-gray-100 py-8 mt-16">
+        {/* Footer chỉ hiện trên desktop */}
+        <footer className="hidden md:block bg-white border-t border-gray-100 py-4 flex-shrink-0">
           <div className="max-w-6xl mx-auto px-4 text-center text-sm text-gray-400">
-            <p className="hanzi text-lg font-medium text-gray-600 mb-1">学中文，每天进步一点点 🌟 - Phạm Mai</p>
-            <p>Học tiếng Trung, mỗi ngày tiến bộ một chút - Nếu tiến bộ thì cho Chồng xin 500k - STK 0982481134 BIDV</p>
-            <p className="mt-2 text-xs">HSK 1 · HSK 2 · Dành cho người mới bắt đầu cũng như Mai Mai</p>
+            <p className="hanzi font-medium text-gray-500">学中文，每天进步一点点 🌟</p>
           </div>
         </footer>
       </div>
