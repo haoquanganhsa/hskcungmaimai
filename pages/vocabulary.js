@@ -5,12 +5,10 @@ import hsk2 from '../data/HSK2.json';
 import { useRouter } from 'next/router';
 
 const allWords = [...hsk1, ...hsk2];
-const categories = ['Tất cả', ...new Set(allWords.map(w => w.category))];
 
 export default function Vocabulary() {
   const router = useRouter();
   const [level, setLevel]     = useState('Tất cả');
-  const [category, setCategory] = useState('Tất cả');
   const [mode, setMode]       = useState('flashcard');
   const [idx, setIdx]         = useState(0);
   const [learned, setLearned] = useState([]);
@@ -46,10 +44,9 @@ export default function Vocabulary() {
   };
 
   const filtered = allWords.filter(w => {
-    const matchLevel = level === 'Tất cả' || w.level === level;
-    const matchCat   = category === 'Tất cả' || w.category === category;
+    const matchLevel  = level === 'Tất cả' || w.level === level;
     const matchSearch = !search || w.hanzi.includes(search) || w.meaning.toLowerCase().includes(search.toLowerCase()) || w.pinyin.includes(search);
-    return matchLevel && matchCat && matchSearch;
+    return matchLevel && matchSearch;
   });
 
   const speak = (text) => {
@@ -110,14 +107,7 @@ export default function Vocabulary() {
             </button>
           ))}
         </div>
-        <div className="flex flex-wrap gap-1">
-          {categories.map(c => (
-            <button key={c} onClick={() => { setCategory(c); setIdx(0); }}
-              className={`px-2 py-0.5 rounded-full text-xs font-medium border transition-all ${category === c ? 'bg-orange-500 text-white border-orange-500' : 'border-gray-200 text-gray-400'}`}>
-              {c}
-            </button>
-          ))}
-        </div>
+
       </div>
 
       {filtered.length === 0 ? (
