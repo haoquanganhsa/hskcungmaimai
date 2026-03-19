@@ -32,6 +32,7 @@ function getGrade(pct) {
 }
 
 export default function Speaking() {
+  const [tab, setTab]             = useState('practice'); // practice | translate
   const [mode, setMode]           = useState('word');
   const [level, setLevel]         = useState('Tất cả');
   const [current, setCurrent]     = useState(0);
@@ -43,6 +44,12 @@ export default function Speaking() {
   const [score, setScore]         = useState({ good: 0, bad: 0 });
   const [userAudioUrl, setUserAudioUrl]   = useState(null);
   const [isPlayingUser, setIsPlayingUser] = useState(false);
+
+  // --- Translate tab state ---
+  const [transListening, setTransListening] = useState(false);
+  const [transResult, setTransResult]       = useState(null); // {vi, zh, pinyin}
+  const [transHistory, setTransHistory]     = useState([]);
+  const transRecRef = useRef(null);
 
   const recognizerRef = useRef(null);
   const mediaRecRef   = useRef(null);
@@ -201,6 +208,84 @@ export default function Speaking() {
     setResult(null); setUserAudioUrl(null); setIsPlayingUser(false);
   };
 
+  // ── Tra từ điển Việt → Trung ─────────────────────────────────
+  const lookupVietnamese = (text) => {
+    const t = text.trim().toLowerCase();
+    // Tìm trong toàn bộ từ điển (so sánh meaning)
+    const found = allWords.filter(w => {
+      const meanings = w.meaning.toLowerCase();
+      // So khớp chính xác hoặc chứa từ tìm kiếm
+      return meanings === t ||
+        meanings.includes(t) ||
+        t.includes(meanings.split('/')[0].trim()) ||
+        t.includes(meanings.split(',')[0].trim()) ||
+        t.split(' ').some(word => word.length > 2 && meanings.includes(word));
+    });
+    return found.slice(0, 5); // Trả về tối đa 5 kết quả
+  };
+
+  // ── Nhận giọng tiếng Việt ─────────────────────────────────────
+  const startTranslate = () => {
+    if (!supported) return;
+    setTransResult(null);
+    setTransListening(true);
+
+    const SR  = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.lang           = 'vi-VN'; // Tiếng Việt
+    rec.continuous     = false;
+    rec.interimResults = false;
+    rec.maxAlternatives = 3;
+
+    rec.onresult = (e) => {
+      // Lấy tất cả alternatives, tìm cái nào match tốt nhất
+      let bestText = e.results[0][0].transcript;
+      let bestMatches = [];
+
+      for (let i = 0; i < e.results[0].length; i++) {
+        const text = e.results[0][i].transcript;
+        const matches = lookupVietnamese(text);
+        if (matches.length > bestMatches.length) {
+          bestMatches = matches;
+          bestText = text;
+        }
+      }
+
+      const results = lookupVietnamese(bestText);
+      setTransResult({ vi: bestText, matches: results.length > 0 ? results : [] });
+      setTransListening(false);
+      setTransHistory(h => [{ vi: bestText, matches: results }, ...h].slice(0, 10));
+
+      // Tự phát âm kết quả đầu tiên
+      if (results.length > 0) {
+        setTimeout(() => speakZh(results[0].hanzi), 300);
+      }
+    };
+
+    rec.onerror = (e) => {
+      setTransListening(false);
+      if (e.error === 'no-speech') setTransResult({ vi: '(không nghe thấy)', matches: [] });
+      else if (e.error === 'not-allowed') alert('Vui lòng cho phép microphone!');
+    };
+
+    rec.onend = () => setTransListening(false);
+    transRecRef.current = rec;
+    rec.start();
+  };
+
+  const stopTranslate = () => {
+    transRecRef.current?.stop();
+    setTransListening(false);
+  };
+
+  const speakZh = (text) => {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-CN'; u.rate = 0.8;
+    window.speechSynthesis.speak(u);
+  };
+
   const total    = score.good + score.bad;
   const accuracy = total > 0 ? Math.round((score.good / total) * 100) : 0;
 
@@ -234,11 +319,119 @@ export default function Speaking() {
           onPause={() => setIsPlayingUser(false)} />
       )}
 
-      {/* Header */}
+      {/* Header + Tab */}
       <div className="mb-3">
-        <h1 className="text-lg font-bold text-gray-800 mb-1">🎤 Luyện nói</h1>
-        <p className="text-gray-500 text-sm">Nghe mẫu → Nói lại → Xem % độ chính xác</p>
+        <h1 className="text-lg font-bold text-gray-800 mb-2">🎤 Luyện nói</h1>
+        <div className="flex gap-2">
+          <button onClick={() => setTab('practice')}
+            className={`flex-1 py-2 rounded-xl text-sm font-medium border-2 transition-all
+              ${tab === 'practice' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600'}`}>
+            🎯 Luyện phát âm
+          </button>
+          <button onClick={() => setTab('translate')}
+            className={`flex-1 py-2 rounded-xl text-sm font-medium border-2 transition-all
+              ${tab === 'translate' ? 'bg-green-600 text-white border-green-600' : 'border-gray-200 text-gray-600'}`}>
+            🇻🇳 Nói Việt → Trung
+          </button>
+        </div>
       </div>
+
+      {/* ══ TAB DỊCH TIẾNG VIỆT ══ */}
+      {tab === 'translate' && (
+        <div className="space-y-3">
+          {/* Nút mic */}
+          <div className="bg-white rounded-xl border border-gray-100 p-6 text-center">
+            <p className="text-sm text-gray-500 mb-4">
+              Nói một từ hoặc cụm từ <strong>tiếng Việt</strong><br/>
+              <span className="text-xs text-gray-400">Ví dụ: "yêu", "cảm ơn", "học tiếng Trung"</span>
+            </p>
+
+            <button onClick={transListening ? stopTranslate : startTranslate}
+              className={`w-20 h-20 rounded-full font-bold text-2xl mx-auto flex items-center justify-center transition-all shadow-lg
+                ${transListening
+                  ? 'bg-red-500 text-white animate-pulse shadow-red-200'
+                  : 'bg-green-500 text-white hover:bg-green-600 active:scale-95 shadow-green-200'}`}>
+              {transListening ? '⏹' : '🎙️'}
+            </button>
+            <p className="text-xs text-gray-400 mt-3">
+              {transListening ? '🔴 Đang nghe tiếng Việt...' : 'Bấm và nói tiếng Việt'}
+            </p>
+          </div>
+
+          {/* Kết quả */}
+          {transResult && (
+            <div className="bg-white rounded-xl border border-gray-100 p-4 fade-in">
+              {/* Từ đã nói */}
+              <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-100">
+                <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full font-medium">Bạn nói</span>
+                <span className="text-base font-semibold text-gray-700">"{transResult.vi}"</span>
+              </div>
+
+              {transResult.matches.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-400 mb-2">Kết quả ({transResult.matches.length} từ):</p>
+                  {transResult.matches.map((w, i) => (
+                    <div key={i}
+                      className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer hover:border-blue-200 hover:bg-blue-50
+                        ${i === 0 ? 'border-green-200 bg-green-50' : 'border-gray-100'}`}
+                      onClick={() => speakZh(w.hanzi)}>
+                      <div className="flex items-center gap-3">
+                        {i === 0 && <span className="text-xs bg-green-500 text-white px-1.5 py-0.5 rounded-full">Tốt nhất</span>}
+                        <div>
+                          <span className="hanzi text-3xl font-medium text-gray-800">{w.hanzi}</span>
+                          <span className="text-blue-500 text-sm ml-2">{w.pinyin}</span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-gray-700">{w.meaning}</p>
+                        <button onClick={(e) => { e.stopPropagation(); speakZh(w.hanzi); }}
+                          className="text-blue-400 hover:text-blue-600 text-xs mt-0.5">
+                          🔊 Phát âm
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <p className="text-gray-400 text-sm">😅 Không tìm thấy từ nào khớp</p>
+                  <p className="text-xs text-gray-400 mt-1">Thử nói rõ hơn hoặc nói từng từ đơn</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Lịch sử */}
+          {transHistory.length > 0 && (
+            <div className="bg-white rounded-xl border border-gray-100 p-4">
+              <h3 className="text-xs font-semibold text-gray-500 mb-2">📜 Lịch sử</h3>
+              <div className="space-y-2">
+                {transHistory.slice(0, 6).map((h, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="text-gray-500 text-xs">"{h.vi}"</span>
+                    <div className="flex items-center gap-2">
+                      {h.matches.slice(0, 2).map((w, j) => (
+                        <button key={j} onClick={() => speakZh(w.hanzi)}
+                          className="hanzi text-base text-gray-700 hover:text-blue-600">
+                          {w.hanzi}
+                        </button>
+                      ))}
+                      {h.matches.length === 0 && <span className="text-gray-300 text-xs">không tìm thấy</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-700">
+            💡 <strong>Mẹo:</strong> Nói rõ từng từ, tránh nói quá nhanh. Tính năng tìm kiếm trong {allWords.length} từ HSK1-HSK2.
+          </div>
+        </div>
+      )}
+
+      {/* ══ TAB LUYỆN PHÁT ÂM ══ */}
+      {tab === 'practice' && (<>
 
       {/* Score */}
       <div className="grid grid-cols-3 gap-3 mb-3">
@@ -417,6 +610,7 @@ export default function Speaking() {
           </div>
         </div>
       )}
+      </>)}
     </div>
   );
 }
