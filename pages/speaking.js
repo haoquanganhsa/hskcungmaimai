@@ -210,18 +210,43 @@ export default function Speaking() {
 
   // ── Tra từ điển Việt → Trung ─────────────────────────────────
   const lookupVietnamese = (text) => {
-    const t = text.trim().toLowerCase();
-    // Tìm trong toàn bộ từ điển (so sánh meaning)
-    const found = allWords.filter(w => {
+    const t = text.trim().toLowerCase()
+      .replace(/[.,!?]/g, '')
+      .replace(/\s+/g, ' ');
+
+    const scored = [];
+
+    for (const w of allWords) {
       const meanings = w.meaning.toLowerCase();
-      // So khớp chính xác hoặc chứa từ tìm kiếm
-      return meanings === t ||
-        meanings.includes(t) ||
-        t.includes(meanings.split('/')[0].trim()) ||
-        t.includes(meanings.split(',')[0].trim()) ||
-        t.split(' ').some(word => word.length > 2 && meanings.includes(word));
-    });
-    return found.slice(0, 5); // Trả về tối đa 5 kết quả
+      // Tách các nghĩa theo dấu / , ;
+      const parts = meanings.split(/[\/,;]/).map(p => p.trim()).filter(Boolean);
+      let score = 0;
+
+      // Khớp hoàn toàn với toàn bộ meaning → điểm cao nhất
+      if (meanings === t) score = 100;
+      // Khớp hoàn toàn với một nghĩa cụ thể
+      else if (parts.some(p => p === t)) score = 90;
+      // Từ tìm kiếm chứa hoàn toàn một nghĩa (ví dụ: "cái ghế" chứa "ghế")
+      else if (parts.some(p => p.length >= 3 && t === p)) score = 85;
+      // Một nghĩa chứa hoàn toàn từ tìm kiếm
+      else if (parts.some(p => p.includes(t) && t.length >= 3)) score = 80;
+      // Từ tìm kiếm chứa một nghĩa (ví dụ: "học tiếng trung" chứa "học")
+      else if (parts.some(p => p.length >= 4 && t.includes(p))) score = 60;
+      // Tất cả các từ trong query đều có mặt trong meaning
+      else {
+        const queryWords = t.split(' ').filter(w => w.length >= 3);
+        const matchCount = queryWords.filter(qw => meanings.includes(qw)).length;
+        if (queryWords.length > 0 && matchCount === queryWords.length) score = 70;
+        else if (matchCount > 0) score = 20 * matchCount / queryWords.length;
+      }
+
+      if (score > 0) scored.push({ ...w, score });
+    }
+
+    // Sắp xếp theo điểm, lấy top 5
+    return scored
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
   };
 
   // ── Nhận giọng tiếng Việt ─────────────────────────────────────
