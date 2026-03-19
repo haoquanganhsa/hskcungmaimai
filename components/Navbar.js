@@ -92,8 +92,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Spacer for bottom nav on mobile */}
-      <div className="md:hidden h-16 fixed-bottom-spacer pointer-events-none" />
     </>
   );
 }
