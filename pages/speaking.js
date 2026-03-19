@@ -249,7 +249,23 @@ export default function Speaking() {
       .slice(0, 5);
   };
 
-  // ── Nhận giọng tiếng Việt ─────────────────────────────────────
+  // ── Dịch qua MyMemory API (miễn phí, không cần key) ──────────
+  const translateWithAPI = async (text) => {
+    try {
+      const res = await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=vi|zh`
+      );
+      const data = await res.json();
+      if (data.responseStatus === 200 && data.responseData?.translatedText) {
+        const zh = data.responseData.translatedText.trim();
+        // Lọc bỏ kết quả không phải chữ Hán
+        if (/[\u4e00-\u9fff]/.test(zh)) {
+          return zh;
+        }
+      }
+    } catch {}
+    return null;
+  };
   const startTranslate = () => {
     if (!supported) return;
     setTransResult(null);
@@ -262,8 +278,7 @@ export default function Speaking() {
     rec.interimResults = false;
     rec.maxAlternatives = 3;
 
-    rec.onresult = (e) => {
-      // Lấy tất cả alternatives, tìm cái nào match tốt nhất
+    rec.onresult = async (e) => {
       let bestText = e.results[0][0].transcript;
       let bestMatches = [];
 
@@ -276,15 +291,28 @@ export default function Speaking() {
         }
       }
 
-      const results = lookupVietnamese(bestText);
-      setTransResult({ vi: bestText, matches: results.length > 0 ? results : [] });
-      setTransListening(false);
-      setTransHistory(h => [{ vi: bestText, matches: results }, ...h].slice(0, 10));
+      const localMatches = lookupVietnamese(bestText);
 
-      // Tự phát âm kết quả đầu tiên
-      if (results.length > 0) {
-        setTimeout(() => speakZh(results[0].hanzi), 300);
+      if (localMatches.length > 0) {
+        // Có trong từ điển local
+        setTransResult({ vi: bestText, matches: localMatches, fromAPI: false });
+        setTransHistory(h => [{ vi: bestText, matches: localMatches }, ...h].slice(0, 10));
+        setTimeout(() => speakZh(localMatches[0].hanzi), 300);
+      } else {
+        // Không có trong local → gọi MyMemory API
+        setTransResult({ vi: bestText, matches: [], loading: true });
+        const zhFromAPI = await translateWithAPI(bestText);
+        if (zhFromAPI) {
+          const apiResult = [{ hanzi: zhFromAPI, pinyin: '(API dịch)', meaning: bestText, level: 'API' }];
+          setTransResult({ vi: bestText, matches: apiResult, fromAPI: true });
+          setTransHistory(h => [{ vi: bestText, matches: apiResult }, ...h].slice(0, 10));
+          setTimeout(() => speakZh(zhFromAPI), 300);
+        } else {
+          setTransResult({ vi: bestText, matches: [], fromAPI: true });
+          setTransHistory(h => [{ vi: bestText, matches: [] }, ...h].slice(0, 10));
+        }
       }
+      setTransListening(false);
     };
 
     rec.onerror = (e) => {
@@ -394,17 +422,26 @@ export default function Speaking() {
 
               {transResult.matches.length > 0 ? (
                 <div className="space-y-2">
-                  <p className="text-xs text-gray-400 mb-2">Kết quả ({transResult.matches.length} từ):</p>
+                  <p className="text-xs text-gray-400 mb-2">
+                    {transResult.fromAPI ? '🌐 Kết quả từ API dịch:' : `Kết quả (${transResult.matches.length} từ):`}
+                  </p>
                   {transResult.matches.map((w, i) => (
                     <div key={i}
                       className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer hover:border-blue-200 hover:bg-blue-50
                         ${i === 0 ? 'border-green-200 bg-green-50' : 'border-gray-100'}`}
                       onClick={() => speakZh(w.hanzi)}>
                       <div className="flex items-center gap-3">
-                        {i === 0 && <span className="text-xs bg-green-500 text-white px-1.5 py-0.5 rounded-full">Tốt nhất</span>}
+                        {i === 0 && !transResult.fromAPI && (
+                          <span className="text-xs bg-green-500 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">Tốt nhất</span>
+                        )}
+                        {transResult.fromAPI && (
+                          <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded-full flex-shrink-0">🌐 API</span>
+                        )}
                         <div>
                           <span className="hanzi text-3xl font-medium text-gray-800">{w.hanzi}</span>
-                          <span className="text-blue-500 text-sm ml-2">{w.pinyin}</span>
+                          {w.pinyin !== '(API dịch)' && (
+                            <span className="text-blue-500 text-sm ml-2">{w.pinyin}</span>
+                          )}
                         </div>
                       </div>
                       <div className="text-right">
@@ -416,6 +453,11 @@ export default function Speaking() {
                       </div>
                     </div>
                   ))}
+                </div>
+              ) : transResult.loading ? (
+                <div className="text-center py-6">
+                  <div className="text-2xl animate-spin inline-block mb-2">⏳</div>
+                  <p className="text-gray-400 text-sm">Đang dịch qua API...</p>
                 </div>
               ) : (
                 <div className="text-center py-4">
@@ -450,7 +492,7 @@ export default function Speaking() {
           )}
 
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-700">
-            💡 <strong>Mẹo:</strong> Nói rõ từng từ, tránh nói quá nhanh. Tính năng tìm kiếm trong {allWords.length} từ HSK1-HSK2.
+            💡 <strong>Mẹo:</strong> Nói rõ từng từ, tránh nói quá nhanh. Tìm trong <strong>{allWords.length} từ HSK</strong> trước, nếu không có sẽ dịch qua <strong>MyMemory API</strong> miễn phí.
           </div>
         </div>
       )}

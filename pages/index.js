@@ -25,14 +25,14 @@ export default function Home() {
       {/* Hero */}
       <div className="text-center mb-4">
         <div className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-blue-200">
-          🇨🇳 Học tiếng Trung từ cơ bản đến thi HSK
+          🇨🇳 Học tiếng Trung cơ bản cùng Mai Mai
         </div>
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-          Học tiếng Trung <span className="text-blue-600">thật dễ</span>
+          Học tiếng Trung cùng Mai Mai <span className="text-blue-600">thật dễ</span>
         </h1>
         <p className="hanzi text-3xl md:text-4xl text-blue-700 font-medium mb-2">汉语学习</p>
         <p className="text-sm text-gray-500 max-w-md mx-auto mb-3">
-          Lộ trình HSK1–HSK2 dành cho người Việt. Học qua Flashcard, Quiz, Nghe, Nói và Viết.
+          Học qua Flashcard, Quiz, Nghe, Nói, Đọc và Viết.
         </p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link href="/vocabulary" className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors text-sm shadow-sm">

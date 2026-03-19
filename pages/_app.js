@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }) {
         <meta name="theme-color" content="#2563eb" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <title>HSK Học Tiếng Trung</title>
+        <title>HSK Học Tiếng Trung cùng Mai Mai</title>
       </Head>
       <div className="flex flex-col bg-gray-50" style={{ height: '100dvh' }}>
         <Navbar />
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }) {
         {/* Footer chỉ hiện trên desktop */}
         <footer className="hidden md:block bg-white border-t border-gray-100 py-4 flex-shrink-0">
           <div className="max-w-6xl mx-auto px-4 text-center text-sm text-gray-400">
-            <p className="hanzi font-medium text-gray-500">学中文，每天进步一点点 🌟</p>
+            <p className="hanzi font-medium text-gray-500">学中文，每天进步一点点 🌟 - Học tiếng Trung cùng Mai Mai</p>
           </div>
         </footer>
       </div>
