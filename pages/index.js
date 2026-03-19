@@ -73,8 +73,8 @@ export default function Home() {
           <h2 className="text-sm font-bold text-gray-700 mb-2">🗺️ Lộ trình học HSK</h2>
           <div className="space-y-2">
             {[
-              { level: 'HSK 1', words: '150 từ', topics: 'Chào hỏi, Gia đình, Số đếm, Thời gian', color: 'bg-green-100 text-green-700' },
-              { level: 'HSK 2', words: '300 từ', topics: 'Công việc, Địa điểm, Cảm xúc, Liên từ', color: 'bg-blue-100 text-blue-700' },
+              { level: 'HSK 1', words: '500 từ', topics: 'Chào hỏi, Gia đình, Số đếm, Thời gian', color: 'bg-green-100 text-green-700' },
+              { level: 'HSK 2', words: '800 từ', topics: 'Công việc, Địa điểm, Cảm xúc, Liên từ', color: 'bg-blue-100 text-blue-700' },
             ].map((r, i) => (
               <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-gray-50">
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${r.color}`}>{r.level}</span>
